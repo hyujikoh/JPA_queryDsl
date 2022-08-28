@@ -23,4 +23,10 @@ class DemoApplicationTests {
         userRepository.saveAll(Arrays.asList(u1,u2));
     }
 
+    @Test
+    @DisplayName("회원생성")
+    void t2() {
+        userRepository.getQslUser(1L);
+    }
+
 }
