@@ -18,8 +18,16 @@ class DemoApplicationTests {
     @Test
     @DisplayName("회원생성")
     void t1() {
-       SiteUser u1 = new SiteUser(null,"user1","{noop}1234","user1@test.com");
-       SiteUser u2 = new SiteUser(null,"user2","{noop}1234","user2@test.com");
+       SiteUser u1 = SiteUser.builder()
+               .username("user3")
+               .password("123")
+               .email("test3@com")
+               .build();
+        SiteUser u2 = SiteUser.builder()
+                .username("user3")
+                .password("123")
+                .email("test3@com")
+                .build();
         userRepository.saveAll(Arrays.asList(u1,u2));
     }
 
