@@ -12,8 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 public class SiteUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

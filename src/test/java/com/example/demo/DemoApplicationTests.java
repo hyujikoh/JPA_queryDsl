@@ -20,15 +20,15 @@ class DemoApplicationTests {
     void t1() {
        SiteUser u1 = SiteUser.builder()
                .username("user3")
-               .password("123")
-               .email("test3@com")
+               .password("{noop}123")
+               .email("user3@test.com")
                .build();
         SiteUser u2 = SiteUser.builder()
-                .username("user3")
-                .password("123")
-                .email("test3@com")
+                .username("user4")
+                .password("{noop}123")
+                .email("user4@test.com")
                 .build();
-        userRepository.saveAll(Arrays.asList(u1,u2));
+        userRepository.saveAll(Arrays.asList(u1, u2));
     }
 
     @Test
