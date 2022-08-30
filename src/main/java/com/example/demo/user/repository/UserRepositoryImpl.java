@@ -74,7 +74,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
         for(Sort.Order o : pageable.getSort()){
             PathBuilder pathBuilder = new PathBuilder(siteUser.getType(), siteUser.getMetadata());
-            usersQuery.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+            usersQuery.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty() ) ) );
 
         }
         List<SiteUser> users = usersQuery.fetch();
