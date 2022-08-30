@@ -3,10 +3,15 @@ package com.example.demo.user.repository;
 
 import com.example.demo.user.entity.QSiteUser;
 import com.example.demo.user.entity.SiteUser;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
@@ -61,15 +66,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     @Override
     public Page<SiteUser> searchQsl(String kw, Pageable pageable) {
-        List<SiteUser> users= jpaQueryFactory.select(siteUser)
+        JPAQuery<SiteUser> usersQuery= jpaQueryFactory.select(siteUser)
                 .from(siteUser)
                 .where(siteUser.username.contains(kw).or(siteUser.email.contains(kw)))
-                .offset(pageable.getPageSize()) // 몇개를 건너 띄어야 하는지 LIMIT 1
-                .limit(pageable.getOffset())//한페이지에 몇개를 건너 띄어야하는지 LIMIT ?,{1}
-                .orderBy(siteUser.id.asc())
-                .fetch();
-        LongSupplier totalSuppiler = () -> 2 ;
-        return PageableExecutionUtils.getPage(users,pageable,null);
+                .offset(pageable.getOffset()) // 몇개를 건너 띄어야 하는지 LIMIT 1
+                .limit(pageable.getPageSize());//한페이지에 몇개를 건너 띄어야하는지 LIMIT ?,{1}
+
+        for(Sort.Order o : pageable.getSort()){
+            PathBuilder pathBuilder = new PathBuilder(siteUser.getType(), siteUser.getMetadata());
+            usersQuery.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+
+        }
+        List<SiteUser> users = usersQuery.fetch();
+        LongSupplier totalSupplier = () -> 2 ;
+        return PageableExecutionUtils.getPage(users,pageable,totalSupplier
+        );
 
     }
 }
