@@ -18,6 +18,4 @@ public class InterestKeyword {
     @EqualsAndHashCode.Include
     private String content;
 
-
-
 }

@@ -180,14 +180,16 @@ class DemoApplicationTests {
     @DisplayName("검색, Page 리턴, id DESC, pageSize=1, page=0")
     @Rollback(value = false)
     void t10() {
-        SiteUser u2 = userRepository.getQslUser(1L);
-
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
         u2.addInterestKeywordContent("운동");
-
         u2.addInterestKeywordContent("신발수집");
 
-
+        u1.addInterestKeywordContent("운동");
+        u1.addInterestKeywordContent("신발수집");
+        u1.addInterestKeywordContent("헬스");
         userRepository.save(u2);
+        userRepository.save(u1);
 // 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
         // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
         // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성
