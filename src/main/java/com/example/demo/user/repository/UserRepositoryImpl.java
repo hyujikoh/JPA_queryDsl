@@ -78,9 +78,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
         }
         List<SiteUser> users = usersQuery.fetch();
-        LongSupplier totalSupplier = () -> 2 ;
-        return PageableExecutionUtils.getPage(users,pageable,totalSupplier
-        );
+
+
+        return PageableExecutionUtils.getPage(users,pageable,usersQuery::fetchCount);
 
     }
 }
