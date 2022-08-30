@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +79,7 @@ class DemoApplicationTests {
         assertThat(ul.get(0)).isEqualTo(userRepository.getQslUser(1L));
 
     }
+
     @Test
     @DisplayName("user1이라는 정보 있는지")
     void t6() {
@@ -93,8 +95,8 @@ class DemoApplicationTests {
     void t8() {
         long totalCount = userRepository.count();
         int pageSize = 1; // 한 페이지에 보여줄 아이템 개수
-        int page = 1 ;
-        int totalPages = (int)Math.ceil(totalCount/(double)pageSize);
+        int page = 1;
+        int totalPages = (int) Math.ceil(totalCount / (double) pageSize);
 
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.asc("id"));
@@ -148,7 +150,7 @@ class DemoApplicationTests {
     void t9() {
         long totalCount = userRepository.count();
         int pageSize = 1; // 한 페이지에 보여줄 아이템 개수
-        int totalPages = (int)Math.ceil(totalCount / (double)pageSize);
+        int totalPages = (int) Math.ceil(totalCount / (double) pageSize);
         int page = 1;
         String kw = "user";
 
@@ -170,6 +172,25 @@ class DemoApplicationTests {
         assertThat(u.getId()).isEqualTo(1L);
         assertThat(u.getUsername()).isEqualTo("user123");
         assertThat(u.getEmail()).isEqualTo("user1@test.com");
-        assertThat(u.getPassword()).isEqualTo("{noop}1234");}
+        assertThat(u.getPassword()).isEqualTo("{noop}1234");
+    }
 
+
+    @Test
+    @DisplayName("검색, Page 리턴, id DESC, pageSize=1, page=0")
+    @Rollback(value = false)
+    void t10() {
+        SiteUser u2 = userRepository.getQslUser(1L);
+
+        u2.addInterestKeywordContent("운동");
+
+        u2.addInterestKeywordContent("신발수집");
+
+
+        userRepository.save(u2);
+// 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
+        // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
+        // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성
+
+    }
 }
