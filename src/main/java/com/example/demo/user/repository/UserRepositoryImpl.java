@@ -2,6 +2,7 @@ package com.example.demo.user.repository;
 
 
 import com.example.demo.interestKeyword.entity.InterestKeyword;
+import com.example.demo.interestKeyword.entity.QInterestKeyword;
 import com.example.demo.user.entity.QSiteUser;
 import com.example.demo.user.entity.SiteUser;
 import com.querydsl.core.types.Order;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+
+import static com.example.demo.interestKeyword.entity.QInterestKeyword.interestKeyword;
 
 import java.util.List;
 import java.util.function.LongSupplier;
@@ -92,4 +95,25 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .where(siteUser.interestKeywords.contains(new InterestKeyword(keyword)))
                 .fetch();
     }
+    @Override
+    public List<SiteUser> getQslUserWhereInterest_v2(String keyword) {
+        return jpaQueryFactory.select(siteUser)
+                .from(siteUser)
+                .innerJoin(siteUser.interestKeywords)
+                .fetch();
+    }
+
+    @Override
+    public List<SiteUser> getQslUserWhereInterest_v3(String keyword) {
+        QInterestKeyword IK = new QInterestKeyword("IK");
+
+        return jpaQueryFactory
+                .selectFrom(siteUser)
+                .innerJoin(siteUser.interestKeywords, interestKeyword)
+                .where(
+                        interestKeyword.content.eq(keyword)
+                )
+                .fetch();
+    }
+
 }

@@ -226,12 +226,28 @@ class DemoApplicationTests {
 
         u1.addInterestKeywordContent("축구");
         userRepository.save(u1);
-        List<SiteUser> userList = userRepository.getQslUserWhereInterest("축구");
-        assertThat(userList.get(0).getUsername()).isEqualTo(u1.getUsername());
+        List<SiteUser> userList = userRepository.getQslUserWhereInterest("운동");
+        assertThat(userList.get(0).getEmail()).isEqualTo(u1.getEmail());
 
 // 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
         // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
         // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성
+
+    }
+    @Test
+    @DisplayName("Spring Data JPA 기본, 축구에 관심이 있는 회원들 검색")
+    void t13() {
+
+        List<SiteUser> users = userRepository.findByInterestKeywords_content("축구");
+
+        assertThat(users.size()).isEqualTo(1);
+
+        SiteUser u = users.get(0);
+
+        assertThat(u.getId()).isEqualTo(1L);
+        assertThat(u.getUsername()).isEqualTo("user1");
+        assertThat(u.getEmail()).isEqualTo("user1@test.com");
+        assertThat(u.getPassword()).isEqualTo("{noop}1234");
 
     }
 }

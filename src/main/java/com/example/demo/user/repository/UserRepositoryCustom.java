@@ -1,5 +1,6 @@
 package com.example.demo.user.repository;
 
+import com.example.demo.interestKeyword.entity.InterestKeyword;
 import com.example.demo.user.entity.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +16,6 @@ public interface UserRepositoryCustom {
     Page<SiteUser> searchQsl(String kw, Pageable pageable);
 
     List<SiteUser> getQslUserWhereInterest(String 축구);
+    List<SiteUser> getQslUserWhereInterest_v2(String keyword);
+    List<SiteUser> getQslUserWhereInterest_v3(String keyword);
 }

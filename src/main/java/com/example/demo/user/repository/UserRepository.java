@@ -7,5 +7,5 @@ import java.util.List;
 
 // queryDSL 적용하기 위해 custom interface 적용
 public interface UserRepository extends JpaRepository<SiteUser, Long>,UserRepositoryCustom {
-
+        List<SiteUser> findByInterestKeywords_content(String key);
 }
