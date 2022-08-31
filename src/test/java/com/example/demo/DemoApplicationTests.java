@@ -177,7 +177,7 @@ class DemoApplicationTests {
 
 
     @Test
-    @DisplayName("검색, Page 리턴, id DESC, pageSize=1, page=0")
+    @DisplayName("중간테이블")
     @Rollback(value = false)
     void t10() {
         SiteUser u1 = userRepository.getQslUser(1L);
@@ -190,6 +190,45 @@ class DemoApplicationTests {
         u1.addInterestKeywordContent("헬스");
         userRepository.save(u2);
         userRepository.save(u1);
+// 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
+        // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
+        // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성
+
+    }
+
+    @Test
+    @DisplayName("중간테이블 2명 추가 ")
+    @Rollback(value = false)
+    void t11() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
+        u2.addInterestKeywordContent("운동");
+        u2.addInterestKeywordContent("신발수집");
+        userRepository.save(u2);
+        u1.addInterestKeywordContent("운동");
+        u1.addInterestKeywordContent("신발수집");
+        u1.addInterestKeywordContent("헬스");
+        userRepository.save(u1);
+
+// 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
+        // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
+        // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성
+
+    }
+    @Test
+    @DisplayName("축구에 관심이 있는 회원을 검색할 수 있다.")
+    void t12() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
+        u2.addInterestKeywordContent("운동");
+        u2.addInterestKeywordContent("신발수집");
+        userRepository.save(u2);
+
+        u1.addInterestKeywordContent("축구");
+        userRepository.save(u1);
+        List<SiteUser> userList = userRepository.getQslUserWhereInterest("축구");
+        assertThat(userList.get(0).getUsername()).isEqualTo(u1.getUsername());
+
 // 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
         // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
         // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성

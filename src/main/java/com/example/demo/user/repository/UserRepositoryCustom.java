@@ -13,4 +13,6 @@ public interface UserRepositoryCustom {
     List<SiteUser> getQslUserOrderByIdAsc();
     List<SiteUser> getQslUserByLikeIdOrEmail(String name);
     Page<SiteUser> searchQsl(String kw, Pageable pageable);
+
+    List<SiteUser> getQslUserWhereInterest(String 축구);
 }
