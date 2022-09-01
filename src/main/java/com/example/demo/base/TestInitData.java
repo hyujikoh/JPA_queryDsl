@@ -17,12 +17,11 @@ import java.util.List;
 @Profile("test")// 이 클래스 정의된 Bean 들은 test 모드에서만 활성화 된다.
 public class TestInitData {
     // CommandLineRunner : 주로 앱 실행 직후 초기데이터 세팅 및 초기화에 사용
-
     @Bean
     CommandLineRunner init(UserRepository userRepository) {
         return args -> {
             SiteUser u1 = SiteUser.builder()
-                    .username("user123")
+                    .username("user1")
                     .password("{noop}1234")
                     .email("user1@test.com")
                     .build();
@@ -32,16 +31,17 @@ public class TestInitData {
                     .password("{noop}1234")
                     .email("user2@test.com")
                     .build();
-            u1.addInterestKeywordContent("운동");
-            u1.addInterestKeywordContent("신발수집");
-            u1.addInterestKeywordContent("헬스");
+
+            userRepository.saveAll(Arrays.asList(u1, u2));
+
             u1.addInterestKeywordContent("축구");
+            u1.addInterestKeywordContent("농구");
 
-            u2.addInterestKeywordContent("운동");
-            u2.addInterestKeywordContent("신발수집");
+            u2.addInterestKeywordContent("클라이밍");
+            u2.addInterestKeywordContent("마라톤");
+            u2.addInterestKeywordContent("농구");
 
-
-            List<SiteUser> siteUsers = userRepository.saveAll(Arrays.asList(u1, u2));
+            userRepository.saveAll(Arrays.asList(u1, u2));
         };
     }
 }

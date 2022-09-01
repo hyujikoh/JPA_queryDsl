@@ -184,11 +184,10 @@ class DemoApplicationTests {
         SiteUser u2 = userRepository.getQslUser(2L);
         u2.addInterestKeywordContent("운동");
         u2.addInterestKeywordContent("신발수집");
-
+        userRepository.save(u2);
         u1.addInterestKeywordContent("운동");
         u1.addInterestKeywordContent("신발수집");
         u1.addInterestKeywordContent("헬스");
-        userRepository.save(u2);
         userRepository.save(u1);
 // 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
         // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
@@ -220,12 +219,12 @@ class DemoApplicationTests {
     void t12() {
         SiteUser u1 = userRepository.getQslUser(1L);
         SiteUser u2 = userRepository.getQslUser(2L);
-        u2.addInterestKeywordContent("운동");
-        u2.addInterestKeywordContent("신발수집");
-        userRepository.save(u2);
-
-        u1.addInterestKeywordContent("축구");
-        userRepository.save(u1);
+//        u2.addInterestKeywordContent("운동");
+//        u2.addInterestKeywordContent("신발수집");
+//        userRepository.save(u2);
+//
+//        u1.addInterestKeywordContent("축구");
+//        userRepository.save(u1);
         List<SiteUser> userList = userRepository.getQslUserWhereInterest("운동");
         assertThat(userList.get(0).getEmail()).isEqualTo(u1.getEmail());
 
@@ -249,5 +248,68 @@ class DemoApplicationTests {
         assertThat(u.getEmail()).isEqualTo("user1@test.com");
         assertThat(u.getPassword()).isEqualTo("{noop}1234");
 
+    }
+
+    @Test
+    @DisplayName("u2=아이돌, u1=팬 u1은 u2의 팔로워 이다.")
+    @Rollback(false)
+    void t14() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
+
+        u1.follow(u2);
+
+        userRepository.save(u2);
+    }
+
+    @Test
+    @DisplayName("본인이 본일을 follow 할 수 없다.")
+    @Rollback(false)
+    void t15() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+
+
+        u1.follow(u1);
+
+        assertThat(u1.getFollowers().size()).isEqualTo(0);
+
+
+    }
+
+    @Test
+    @DisplayName("팔로워 팔로잉 추가")
+    @Rollback(false)
+    void t16() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
+
+        u1.follow(u2);
+
+        // 힌트 SiteUser에 ManyToMany 필드를 하나더 만든다.
+
+        u1.getFollowers(); // []
+        u1.getFollowings(); // [u1]
+
+        u2.getFollowers(); // [u1]
+        u2.getFollowings(); // []
+    }
+
+
+    @Test
+    @DisplayName("")
+    @Rollback(false)
+    void t17() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
+
+        u1.follow(u2);
+
+        // 힌트 SiteUser에 ManyToMany 필드를 하나더 만든다.
+
+        u1.getFollowers(); // []
+        u1.getFollowings(); // [u1]
+
+        u2.getFollowers(); // [u1]
+        u2.getFollowings(); // []
     }
 }

@@ -17,5 +17,4 @@ public class InterestKeyword {
     @Id
     @EqualsAndHashCode.Include
     private String content;
-
 }

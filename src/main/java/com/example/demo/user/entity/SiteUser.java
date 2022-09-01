@@ -17,7 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class SiteUser {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -28,12 +29,35 @@ public class SiteUser {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @Builder.Default  // 널값이 들어가는것을 방지하기 위해 유저 관련 내용생성 할때 비어있을경우
+    @Builder.Default
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<InterestKeyword> interestKeywords = new HashSet<>();
 
     public void addInterestKeywordContent(String keywordContent) {
-            interestKeywords.add(new InterestKeyword(keywordContent));
+        interestKeywords.add(new InterestKeyword(keywordContent));
     }
 
+    @Builder.Default
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<SiteUser> followers = new HashSet<>();
+
+    @Builder.Default
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<SiteUser> followings = new HashSet<>();
+
+
+    public void follow(SiteUser following) {
+        if (this == following) return;
+        if (following == null) return;
+        if (this.getId() == following.getId()) return;
+        following.getFollowers().add(this);
+        following.following(this);
+    }
+    public void following(SiteUser follower) {
+        if (this == follower) return;
+        if (follower == null) return;
+        if (this.getId() == follower.getId()) return;
+        follower.getFollowings().add(this);
+
+    }
 }
