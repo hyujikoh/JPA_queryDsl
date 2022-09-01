@@ -289,27 +289,12 @@ class DemoApplicationTests {
 
         u1.getFollowers(); // []
         u1.getFollowings(); // [u1]
-
+        assertThat(u1.getFollowers().size()).isEqualTo(0);
+        assertThat(u1.getFollowings().size()).isEqualTo(1);
         u2.getFollowers(); // [u1]
         u2.getFollowings(); // []
+        assertThat(u2.getFollowers().size()).isEqualTo(1);
+        assertThat(u2.getFollowings().size()).isEqualTo(0);
     }
 
-
-    @Test
-    @DisplayName("")
-    @Rollback(false)
-    void t17() {
-        SiteUser u1 = userRepository.getQslUser(1L);
-        SiteUser u2 = userRepository.getQslUser(2L);
-
-        u1.follow(u2);
-
-        // 힌트 SiteUser에 ManyToMany 필드를 하나더 만든다.
-
-        u1.getFollowers(); // []
-        u1.getFollowings(); // [u1]
-
-        u2.getFollowers(); // [u1]
-        u2.getFollowings(); // []
-    }
 }
