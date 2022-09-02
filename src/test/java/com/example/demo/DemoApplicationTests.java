@@ -180,15 +180,15 @@ class DemoApplicationTests {
     @DisplayName("중간테이블")
     @Rollback(value = false)
     void t10() {
-        SiteUser u1 = userRepository.getQslUser(1L);
-        SiteUser u2 = userRepository.getQslUser(2L);
-        u2.addInterestKeywordContent("운동");
-        u2.addInterestKeywordContent("신발수집");
-        userRepository.save(u2);
-        u1.addInterestKeywordContent("운동");
-        u1.addInterestKeywordContent("신발수집");
-        u1.addInterestKeywordContent("헬스");
-        userRepository.save(u1);
+//        SiteUser u1 = userRepository.getQslUser(1L);
+//        SiteUser u2 = userRepository.getQslUser(2L);
+//        u2.addInterestKeywordContent("운동");
+//        u2.addInterestKeywordContent("신발수집");
+//        userRepository.save(u2);
+//        u1.addInterestKeywordContent("운동");
+//        u1.addInterestKeywordContent("신발수집");
+//        u1.addInterestKeywordContent("헬스");
+//        userRepository.save(u1);
 // 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
         // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
         // interest_keyword 테이블에 축구, 롤, 헬스에 해당하는 row 3개 생성
@@ -199,15 +199,15 @@ class DemoApplicationTests {
     @DisplayName("중간테이블 2명 추가 ")
     @Rollback(value = false)
     void t11() {
-        SiteUser u1 = userRepository.getQslUser(1L);
-        SiteUser u2 = userRepository.getQslUser(2L);
-        u2.addInterestKeywordContent("운동");
-        u2.addInterestKeywordContent("신발수집");
-        userRepository.save(u2);
-        u1.addInterestKeywordContent("운동");
-        u1.addInterestKeywordContent("신발수집");
-        u1.addInterestKeywordContent("헬스");
-        userRepository.save(u1);
+//        SiteUser u1 = userRepository.getQslUser(1L);
+//        SiteUser u2 = userRepository.getQslUser(2L);
+//        u2.addInterestKeywordContent("운동");
+//        u2.addInterestKeywordContent("신발수집");
+//        userRepository.save(u2);
+//        u1.addInterestKeywordContent("운동");
+//        u1.addInterestKeywordContent("신발수집");
+//        u1.addInterestKeywordContent("헬스");
+//        userRepository.save(u1);
 
 // 엔티티클래스 : InterestKeyword(interest_keyword 테이블)
         // 중간테이블도 생성되어야 함, 힌트 : @ManyToMany
@@ -296,5 +296,46 @@ class DemoApplicationTests {
         assertThat(u2.getFollowers().size()).isEqualTo(1);
         assertThat(u2.getFollowings().size()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("중간테이블 없이 사용")
+    @Rollback(false)
+    void t17() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(2L);
+        u2.addInterestKeywordContent("운동");
+        u2.addInterestKeywordContent("신발수집");
+        userRepository.save(u2);
+        u1.addInterestKeywordContent("운동");
+        u1.addInterestKeywordContent("신발수집");
+        u1.addInterestKeywordContent("헬스");
+        userRepository.save(u1);
+    }
+
+    @Test
+    @DisplayName("8번 회원이 76543 회원 팔로우, 7번이 팔로우")
+    @Rollback(false)
+    void t18() {
+        SiteUser u1 = userRepository.getQslUser(8L);
+        SiteUser u2 = userRepository.getQslUser(7L);
+
+        assertThat(u1.getFollowings().size()).isEqualTo(5);
+        assertThat(u2.getFollowings().size()).isEqualTo(4);
+
+    }
+
+    @Test
+    @DisplayName("관심사 삭제시 고아객체 제거")
+    @Rollback(false)
+    void t19() {
+        SiteUser u1 = userRepository.getQslUser(1L);
+        SiteUser u2 = userRepository.getQslUser(7L);
+        assertThat(u1.getInterestKeywords().size()).isEqualTo(2);
+
+        u1.delInterestKeywordContent("농구");
+        assertThat(u1.getInterestKeywords().size()).isEqualTo(1);
+
+    }
+
 
 }

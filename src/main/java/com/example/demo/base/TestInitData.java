@@ -32,7 +32,41 @@ public class TestInitData {
                     .email("user2@test.com")
                     .build();
 
-            userRepository.saveAll(Arrays.asList(u1, u2));
+            SiteUser u3 = SiteUser.builder()
+                    .username("user3")
+                    .password("{noop}1234")
+                    .email("user3@test.com")
+                    .build();
+
+            SiteUser u4 = SiteUser.builder()
+                    .username("user4")
+                    .password("{noop}1234")
+                    .email("user4@test.com")
+                    .build();
+
+            SiteUser u5 = SiteUser.builder()
+                    .username("user5")
+                    .password("{noop}1234")
+                    .email("user5@test.com")
+                    .build();
+
+            SiteUser u6 = SiteUser.builder()
+                    .username("user6")
+                    .password("{noop}1234")
+                    .email("user6@test.com")
+                    .build();
+
+            SiteUser u7 = SiteUser.builder()
+                    .username("user7")
+                    .password("{noop}1234")
+                    .email("user7@test.com")
+                    .build();
+
+            SiteUser u8 = SiteUser.builder()
+                    .username("user8")
+                    .password("{noop}1234")
+                    .email("user8@test.com")
+                    .build();
 
             u1.addInterestKeywordContent("축구");
             u1.addInterestKeywordContent("농구");
@@ -41,7 +75,16 @@ public class TestInitData {
             u2.addInterestKeywordContent("마라톤");
             u2.addInterestKeywordContent("농구");
 
-            userRepository.saveAll(Arrays.asList(u1, u2));
+            userRepository.saveAll(Arrays.asList(u1, u2, u3, u4, u5, u6, u7, u8));
+            SiteUser[] u8_follow = {u3, u4, u5, u6, u7};
+            SiteUser[] u7_follow = {u3, u4, u5, u6};
+            for(SiteUser i :u8_follow){
+                u8.follow(i);
+            }
+            for(SiteUser i :u7_follow){
+                u7.follow(i);
+            }
+            userRepository.saveAll(Arrays.asList(u1, u2, u3, u4, u5, u6, u7, u8));
         };
     }
 }

@@ -30,11 +30,14 @@ public class SiteUser {
     private String email;
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
     private Set<InterestKeyword> interestKeywords = new HashSet<>();
 
     public void addInterestKeywordContent(String keywordContent) {
-        interestKeywords.add(new InterestKeyword(keywordContent));
+        interestKeywords.add(new InterestKeyword(this,keywordContent));
+    }
+    public void delInterestKeywordContent(String keywordContent) {
+        interestKeywords.remove(new InterestKeyword(this,keywordContent));
     }
 
     @Builder.Default
