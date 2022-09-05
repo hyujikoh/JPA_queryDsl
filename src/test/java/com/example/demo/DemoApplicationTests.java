@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.interestKeyword.entity.InterestKeyword;
 import com.example.demo.user.entity.SiteUser;
 import com.example.demo.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -341,10 +342,10 @@ class DemoApplicationTests {
     @DisplayName("내가 팔로우 하고 있는 사람이 좋아하는 키워드 가져오기")
     @Rollback(false)
     void t20() {
-        SiteUser u1 = userRepository.getQslUser(7L);
-        userRepository.getQslKeywordWhereFollowing(u1);
+        SiteUser u1 = userRepository.getQslUser(8L);
+       List<String> k =  userRepository.getQslKeywordWhereFollowing(u1);
 
-
+        assertThat(k.size()).isEqualTo(1);
 
 
     }

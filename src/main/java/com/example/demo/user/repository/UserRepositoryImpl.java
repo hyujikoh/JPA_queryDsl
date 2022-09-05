@@ -119,9 +119,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public List<InterestKeyword> getQslKeywordWhereFollowing(SiteUser u) {
-        return jpaQueryFactory.selectFrom(interestKeyword)
-                .innerJoin(interestKeyword.user, siteUser)
+    public List<String> getQslKeywordWhereFollowing(SiteUser u) {
+        return jpaQueryFactory.select(interestKeyword.content).distinct()
+                .from(interestKeyword)
                 .where(interestKeyword.user.in(u.getFollowings()))
                 .fetch();
 
