@@ -18,4 +18,5 @@ public interface UserRepositoryCustom {
     List<SiteUser> getQslUserWhereInterest(String 축구);
     List<SiteUser> getQslUserWhereInterest_v2(String keyword);
     List<SiteUser> getQslUserWhereInterest_v3(String keyword);
+    List<InterestKeyword> getQslKeywordWhereFollowing(SiteUser u);
 }

@@ -337,5 +337,18 @@ class DemoApplicationTests {
 
     }
 
+    @Test
+    @DisplayName("내가 팔로우 하고 있는 사람이 좋아하는 키워드 가져오기")
+    @Rollback(false)
+    void t20() {
+        SiteUser u1 = userRepository.getQslUser(7L);
+        userRepository.getQslKeywordWhereFollowing(u1);
+
+
+        u1.delInterestKeywordContent("농구");
+        assertThat(u1.getInterestKeywords().size()).isEqualTo(1);
+
+    }
+
 
 }

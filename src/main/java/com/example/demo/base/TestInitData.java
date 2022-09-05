@@ -76,8 +76,8 @@ public class TestInitData {
             u2.addInterestKeywordContent("농구");
 
             userRepository.saveAll(Arrays.asList(u1, u2, u3, u4, u5, u6, u7, u8));
-            SiteUser[] u8_follow = {u3, u4, u5, u6, u7};
-            SiteUser[] u7_follow = {u3, u4, u5, u6};
+            SiteUser[] u8_follow = {u1, u2, u5, u6, u7};
+            SiteUser[] u7_follow = {u1, u4, u5, u6};
             for(SiteUser i :u8_follow){
                 u8.follow(i);
             }
@@ -85,6 +85,7 @@ public class TestInitData {
                 u7.follow(i);
             }
             userRepository.saveAll(Arrays.asList(u1, u2, u3, u4, u5, u6, u7, u8));
+
         };
     }
 }
