@@ -345,8 +345,16 @@ class DemoApplicationTests {
         userRepository.getQslKeywordWhereFollowing(u1);
 
 
-        u1.delInterestKeywordContent("농구");
-        assertThat(u1.getInterestKeywords().size()).isEqualTo(1);
+
+
+    }
+    @Test
+    @DisplayName("내가 팔로우 하고 있는 사람이 좋아하는 키워드 가져오기")
+    @Rollback(false)
+    void t20_정답() {
+        SiteUser u1 = userRepository.getQslUser(7L);
+        List<String> keywordContents = userRepository.getByInterestKeywordContents_byFollowingsOf(u1);
+        assertThat(keywordContents.size()).isEqualTo(1);
 
     }
 

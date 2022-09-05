@@ -19,4 +19,5 @@ public interface UserRepositoryCustom {
     List<SiteUser> getQslUserWhereInterest_v2(String keyword);
     List<SiteUser> getQslUserWhereInterest_v3(String keyword);
     List<InterestKeyword> getQslKeywordWhereFollowing(SiteUser u);
+    List<String> getByInterestKeywordContents_byFollowingsOf(SiteUser u);
 }
